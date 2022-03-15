@@ -1,11 +1,11 @@
 public class Student {
-    private String ID;
-    private String name;
-    private String DoB;
+    private String SID;
+    private String Sname;
+    private String Sbd;
 
-    public Student(String ID, String name, String doB) {
-        this.ID = ID;
-        this.name = name;
-        DoB = doB;
+    public Student(String SID, String sname, String sbd) {
+        this.SID = SID;
+        Sname = sname;
+        Sbd = sbd;
     }
 }
