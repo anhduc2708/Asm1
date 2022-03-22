@@ -8,4 +8,25 @@ public class Course {
         this.cName = cName;
         this.cCredits = cCredits;
     }
+
+    public String getcID() {
+        return cID;
+    }
+
+    public String getcName() {
+        return cName;
+    }
+
+    public String getcCredits() {
+        return cCredits;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "cID='" + cID + '\'' +
+                ", cName='" + cName + '\'' +
+                ", cCredits='" + cCredits + '\'' +
+                '}';
+    }
 }
