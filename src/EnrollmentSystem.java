@@ -1,12 +1,13 @@
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EnrollmentSystem {
-    public static ArrayList<Student> studentlist = new ArrayList<Student>();
-
+    public static ArrayList<Student> studentList = new ArrayList<Student>();
+    public static ArrayList<Course> courseList = new ArrayList<Course>();
+    public static ArrayList<StudentEnrolment> studentEnrolmentsList = new ArrayList<>();
+    static Scanner in =new Scanner(System.in);
     public static void menu(){
         System.out.println("\n Enrollment System:");
         System.out.println("**********************");
@@ -24,35 +25,66 @@ public class EnrollmentSystem {
         option = in.nextInt();
         return option;
     }
-    public static void readCSV(String filename){
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
-            String line ="";
-            while (( line = bufferedReader.readLine()) != null){
-                boolean studentCheck = false;
-                boolean CourseCheck = false;
-                String[] ele = line.split(",");
-                for (Student student : studentlist
-                     ) {
-                    if (student.getSID().equals(ele[0])){
-                        studentCheck = true;break;
-                    }
-                }
-                if(!studentCheck){
-                    studentlist.add(new Student(ele[0],ele[1],ele[2]));
-                }
+    public static String readCSV(){
+        boolean done = false;
+        String fileName = "d";
+        StudentEnrolment se;
+        Student s =null;
+        Course c = null;
+
+        while (!done) {
+            System.out.println("Please input your file's name or press d to open the default file: ");
+            fileName = in.nextLine();
+            String defaultname = "src\\default.csv";
+            if (!fileName.equals("d")){
+                defaultname = "src\\" + fileName;
             }
-            System.out.println(studentlist);
+            try {
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(defaultname));
+                String line ="";
+                while (( line = bufferedReader.readLine()) != null){
+                    boolean studentCheck = false;
+                    boolean courseCheck = false;
+                    String[] ele = line.split(",");
+                    for (Student student : studentList
+                    ) {
+                        if (student.getSID().equals(ele[0])){
+                            studentCheck = true;break;
+                        }
+                    }
+                    if(!studentCheck){
+                        s = new Student(ele[0],ele[1],ele[2]);
+                        studentList.add(s);
+                    }
+                    for (Course course : courseList
+                         ) {
+                        if (course.getcID().equals(ele[3])){
+                            courseCheck = true;break;
+                        }
+                    }
+                    if(!courseCheck){
+                        c = new Course(ele[3], ele[4], ele[5]);
+                        courseList.add(c);
+                    }
+                    se = new StudentEnrolment(s,c, ele[6]);
+                    studentEnrolmentsList.add(se);
+                }
+                System.out.println(studentList);
+                System.out.println(courseList);
+                System.out.println(studentEnrolmentsList);
+                done = true;
+            } catch (Exception e){
+                System.out.println(e);
+                done = false;
+            }
         }
-
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
+        return fileName;
     }
+
     public static void main(String[] args) {
+        String filename = readCSV();
         menu();
-        readCSV("src\\default.csv");
+
         int opt;;
         do {
             opt = InputOption();
