@@ -81,17 +81,34 @@ public class EnrollmentSystem {
         return fileName;
     }
 
+    public static boolean check(String input){
+        for (StudentEnrolment check : studentEnrolmentsList
+             ) {
+            if (input.equals(check.getStudent().getSID())){return true;}
+
+        }
+        return false;
+    }
+
+    public static void add(){
+        System.out.println("Please input your ID: ");
+        String ID = in.nextLine();
+        System.out.println(check(ID));
+//        for (int i = 0; i < ; i++) {
+//
+//        }
+    }
+
     public static void main(String[] args) {
         String filename = readCSV();
-        menu();
-
-        int opt;;
+        int opt;
         do {
+            menu();
             opt = InputOption();
             switch (opt){
                 case 1:
-                    System.out.println("Add");
-                    opt = 0; break;
+                    add();
+                  break;
                 case 2:
                     System.out.println("Update");
                     opt = 0; break;
