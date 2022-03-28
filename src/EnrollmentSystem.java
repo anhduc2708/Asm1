@@ -140,6 +140,13 @@ public class EnrollmentSystem {
                     if (student.getsId().equalsIgnoreCase(input1)) {
                         studentResult = input1;
                          s = student;
+                        System.out.println("Your information: ");
+                        for (StudentEnrolment se: studentEnrolmentsList
+                        ) {
+                            if (se.getStudent().getsId().equals(studentResult)){
+                                System.out.println(se.getStudent().getsId()+ ": " +se.getStudent().getsName() +", Course: "+ se.getCourse().getcID()+" "+se.getCourse().getcName());
+                            }
+                        }
                     }
                 }
                 if (studentResult == null) {
@@ -155,6 +162,7 @@ public class EnrollmentSystem {
                     if (course.getcID().equalsIgnoreCase(input2)) {
                         courseResult = input2;
                         c = course;
+
                     }
                 }
                 if (courseResult == null) {
@@ -225,9 +233,41 @@ public class EnrollmentSystem {
             }
         }
 
-
-
-
+    public static void update(){
+        String studentResult = null;
+        do {
+            System.out.print("Please input your ID: ");
+            String input1 = in.nextLine();
+            for (Student student : studentList
+            ) {
+                if (student.getsId().equalsIgnoreCase(input1)) {
+                    studentResult = input1;
+                }
+            }
+            if (studentResult == null) {
+                System.out.println("Invalid student ID!");
+            }
+        } while (studentResult == null);
+        for (StudentEnrolment s: studentEnrolmentsList
+             ) {
+            if (s.getStudent().getsId().equals(studentResult)){
+                System.out.println("Your information: ");
+            System.out.println(s.getStudent().getsId()+ ": " +s.getStudent().getsName() +", Course: "+ s.getCourse().getcID()+" "+s.getCourse().getcName());
+        }
+        }
+        System.out.println("""
+                Select an option:\s
+                1. Add
+                2. Delete""");
+        int input;
+        do {
+            input = InputOption();
+            switch (input) {
+                case 1 -> add();
+                case 2 -> delete();
+            }
+    }  while (input!=0);
+    }
 
     public static void main(String[] args) {
         String filename = readCSV();
@@ -236,17 +276,10 @@ public class EnrollmentSystem {
             menu();
             opt = InputOption();
             switch (opt) {
-                case 0 -> {
-                    System.out.println("Exit");
-                }
+                case 0 -> System.out.println("Exit");
                 case 1 -> add();
-                case 2 -> {
-                    System.out.println("Update");
-                    opt = 0;
-                }
-                case 3 -> {
-                    delete();
-                }
+                case 2 -> update();
+                case 3 -> delete();
                 case 4 -> {
                     System.out.println("Get One");
                     opt = 0;
