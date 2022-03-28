@@ -248,10 +248,10 @@ public class EnrollmentSystem {
                 System.out.println("Invalid student ID!");
             }
         } while (studentResult == null);
+        System.out.println("Your information: ");
         for (StudentEnrolment s: studentEnrolmentsList
              ) {
             if (s.getStudent().getsId().equals(studentResult)){
-                System.out.println("Your information: ");
             System.out.println(s.getStudent().getsId()+ ": " +s.getStudent().getsName() +", Course: "+ s.getCourse().getcID()+" "+s.getCourse().getcName());
         }
         }
