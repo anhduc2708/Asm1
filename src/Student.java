@@ -1,33 +1,33 @@
 public class Student {
-    private String SID;
-    private String Sname;
-    private String Sbd;
+    private String sId;
+    private String sName;
+    private String sBd;
 
-    public Student(String SID, String sname, String sbd) {
-        this.SID = SID;
-        this.Sname = sname;
-        this.Sbd = sbd;
+    public Student(String sId, String sname, String sbd) {
+        this.sId = sId;
+        this.sName = sname;
+        this.sBd = sbd;
     }
 
 
-    public String getSID() {
-        return SID;
+    public String getsId() {
+        return sId;
     }
 
-    public String getSname() {
-        return Sname;
+    public String getsName() {
+        return sName;
     }
 
-    public String getSbd() {
-        return Sbd;
+    public String getsBd() {
+        return sBd;
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                "SID='" + SID + '\'' +
-                ", Sname='" + Sname + '\'' +
-                ", Sbd='" + Sbd + '\'' +
+                "SID='" + sId + '\'' +
+                ", Sname='" + sName + '\'' +
+                ", Sbd='" + sBd + '\'' +
                 '}';
     }
 }
