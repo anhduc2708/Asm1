@@ -1,6 +1,7 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,7 +22,6 @@ public class EnrollmentSystem {
         System.out.println("5: Get All");
         System.out.println("0: Exit");
     }
-
 
     public static int InputOption() {
         int option;
@@ -94,9 +94,8 @@ public class EnrollmentSystem {
         for (StudentEnrolment studentEnrolment : studentEnrolmentsList
         ) {
             if (studentEnrolment.getStudent().getsId().equals(sId)) {
-               check = false;
-                }
-            break;
+                check = false;
+            }
             }
         return check;
     }
@@ -108,9 +107,17 @@ public class EnrollmentSystem {
             if (studentEnrolment.getCourse().getcID().equals(cId)){
                     check = false;
                 }
-            break;
         }
         return check;
+    }
+
+    public static void printOutInfo(){
+        System.out.printf("%-20s", "STUDENT ID");
+        System.out.printf("%20s", "STUDENT NAME");
+        System.out.printf("%20s", "COURSE ID");
+        System.out.printf("%40s", "COURSE NAME");
+        System.out.printf("%20s", "SEMESTER");
+        System.out.printf("%10s", "CREDITS"+"\n");
     }
 
     public static int Index(String sId, String cId){
@@ -124,13 +131,24 @@ public class EnrollmentSystem {
         return i;
     }
 
+    public static void fileSaving(String type, String name, List data) throws IOException {
+        String fileName = "src\\"+ name +".csv";
+        File file = new File(fileName);
+        FileWriter fileWriter = new FileWriter(file, true);
+        fileWriter.write(String.valueOf(data));
+        fileWriter.flush();
+        fileWriter.close();
+    }
+
+
     // CRUD functions
+
     public static void add() {
         String studentResult = null;
         String courseResult = null;
         Student s = null;
         Course c = null;
-        String semResul ;
+        String semResult ;
         while (true) {
             do {
                 System.out.print("Please input your ID: ");
@@ -183,15 +201,15 @@ public class EnrollmentSystem {
                 Pattern input = Pattern.compile(regex);
                 Matcher matcher = input.matcher(input3);
                 if (matcher.find()) {
-                    semResul = input3;
+                    semResult = input3;
                     System.out.println("sem input ok");
                 }
                 else {
                     System.out.println("Invalid Semester!");
-                    semResul = null;
+                    semResult = null;
                 }
-            } while (semResul == null);
-            StudentEnrolment se = new StudentEnrolment(s,c,semResul);
+            } while (semResult == null);
+            StudentEnrolment se = new StudentEnrolment(s,c,semResult);
             studentEnrolmentsList.add(se);
             System.out.println(studentEnrolmentsList);
         }
@@ -269,7 +287,178 @@ public class EnrollmentSystem {
     }  while (input!=0);
     }
 
-    public static void main(String[] args) {
+    public static void getOne() throws IOException {
+
+        System.out.println("""
+                [1] Get a course from a semester.
+                [2] Get a student from a semester.
+                [3] Get a student from a course.\s""");
+        int option;
+        do {
+            option = InputOption();
+            switch (option){
+               case 1 -> {
+                   String courseResult = null;
+                   String semResult;
+                   do {
+                       System.out.print("Please input the course ID: ");
+                       String input2 = in.nextLine();
+                       for (Course course : courseList
+                       ) {
+                           if (course.getcID().equalsIgnoreCase(input2)) {
+                               courseResult = input2;
+                           }
+                       }
+                       if (courseResult == null) {
+                           System.out.println("Invalid course ID!");
+                       }
+                   }while (courseResult == null);
+                   do {
+                       System.out.print("Please input the semester(ex: 2022A): ");
+                       String input3 = in.nextLine();
+                       String regex = "202[0-5][A-C]";
+                       Pattern input = Pattern.compile(regex);
+                       Matcher matcher = input.matcher(input3);
+                       if (matcher.find()) {
+                           semResult = input3;
+                           System.out.println("sem input ok");
+                       }
+                       else {
+                           System.out.println("Invalid Semester!");
+                           semResult = null;
+                       }
+                   } while (semResult == null);
+                   printOutInfo();
+                   for (StudentEnrolment se: studentEnrolmentsList
+                        ) {
+                       if (se.getSemester().equals(semResult) && se.getCourse().getcID().equals(courseResult)){
+                       System.out.printf("%-20s", se.getStudent().getsId());
+                       System.out.printf("%20s", se.getStudent().getsName());
+                       System.out.printf("%20s", se.getCourse().getcID());
+                       System.out.printf("%40s", se.getCourse().getcName());
+                       System.out.printf("%20s", se.getSemester());
+                       System.out.printf("%10s", se.getCourse().getcCredits()+"\n");
+
+                   }
+               }
+                   System.out.println("""
+                           Do you want to save this file?
+                           [1] Yes
+                           [2] No""");
+                   int choice = InputOption();
+                   List<List<String>> Tin = new ArrayList<>();
+                   Tin.add(Arrays.asList("a,b,c,d,1"));
+                   if (choice == 1){
+                   fileSaving("Student","file1",Tin );
+               }
+                   else {break;}
+               }
+
+               case 2 ->{
+                   String studentResult = null;
+                   String semResult;
+                   do {
+                       System.out.print("Please input your ID: ");
+                       String input1 = in.nextLine();
+                       for (Student student : studentList
+                       ) {
+                           if (student.getsId().equalsIgnoreCase(input1)) {
+                               studentResult = input1;
+                           }
+                       }
+                       if (studentResult == null) {
+                           System.out.println("Invalid student ID!");
+                       }
+                   } while (studentResult == null);
+                   do {
+                       System.out.print("Please input the semester(ex: 2022A): ");
+                       String input3 = in.nextLine();
+                       String regex = "202[0-5][A-C]";
+                       Pattern input = Pattern.compile(regex);
+                       Matcher matcher = input.matcher(input3);
+                       if (matcher.find()) {
+                           semResult = input3;
+                           System.out.println("sem input ok");
+                       }
+                       else {
+                           System.out.println("Invalid Semester!");
+                           semResult = null;
+                       }
+                   } while (semResult == null);
+                   printOutInfo();
+                   for (StudentEnrolment se: studentEnrolmentsList
+                   ) {
+                       if (se.getSemester().equals(semResult) && se.getStudent().getsId().equals(studentResult)){
+                           System.out.printf("%-20s", se.getStudent().getsId());
+                           System.out.printf("%20s", se.getStudent().getsName());
+                           System.out.printf("%20s", se.getCourse().getcID());
+                           System.out.printf("%40s", se.getCourse().getcName());
+                           System.out.printf("%20s", se.getSemester());
+                           System.out.printf("%10s", se.getCourse().getcCredits()+"\n");
+                       }
+                   }
+               }
+
+               case 3 -> {
+                   String studentResult = null;
+                   String courseResult = null;
+                   do {
+                       System.out.print("Please input your ID: ");
+                       String input1 = in.nextLine();
+                       for (Student student : studentList
+                       ) {
+                           if (student.getsId().equalsIgnoreCase(input1)) {
+                               studentResult = input1;
+                           }
+                       }
+                       if (studentResult == null) {
+                           System.out.println("Invalid student ID!");
+                       }
+                   } while (studentResult == null);
+                   do {
+                       System.out.print("Please input the course ID: ");
+                       String input2 = in.nextLine();
+                       for (Course course : courseList
+                       ) {
+                           if (course.getcID().equalsIgnoreCase(input2)) {
+                               courseResult = input2;
+                           }
+                       }
+                       if (courseResult == null) {
+                           System.out.println("Invalid course ID!");
+                       }
+                   }while (courseResult == null);
+                   printOutInfo();
+                   for (StudentEnrolment se: studentEnrolmentsList
+                   ) {
+                       if (se.getStudent().getsId().equals(studentResult) && se.getCourse().getcID().equals(courseResult)){
+                           System.out.printf("%-20s", se.getStudent().getsId());
+                           System.out.printf("%20s", se.getStudent().getsName());
+                           System.out.printf("%20s", se.getCourse().getcID());
+                           System.out.printf("%40s", se.getCourse().getcName());
+                           System.out.printf("%20s", se.getSemester());
+                           System.out.printf("%10s", se.getCourse().getcCredits()+"\n");
+                       }
+                   }
+               }
+            }
+        }while(option!=0);
+    }
+
+    public static void getAll(){
+        printOutInfo();
+        for (StudentEnrolment se: studentEnrolmentsList
+             ) {
+            System.out.printf("%-20s", se.getStudent().getsId());
+            System.out.printf("%20s", se.getStudent().getsName());
+            System.out.printf("%20s", se.getCourse().getcID());
+            System.out.printf("%40s", se.getCourse().getcName());
+            System.out.printf("%20s", se.getSemester());
+            System.out.printf("%10s", se.getCourse().getcCredits()+"\n");
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
         String filename = readCSV();
         int opt;
         do {
@@ -280,14 +469,8 @@ public class EnrollmentSystem {
                 case 1 -> add();
                 case 2 -> update();
                 case 3 -> delete();
-                case 4 -> {
-                    System.out.println("Get One");
-                    opt = 0;
-                }
-                case 5 -> {
-                    System.out.println("Get All");
-                    opt = 0;
-                }
+                case 4 -> getOne();
+                case 5 -> getAll();
             }
         }while (opt!=0);
     }
