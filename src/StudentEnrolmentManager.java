@@ -1,10 +1,11 @@
+import java.io.IOException;
+
 public interface StudentEnrolmentManager {
 
 
-    static void add(){}
-    static void update(){}
-    static void delete(){}
-    static void getOne(){}
-    static void getAll(){}
-
+    void add();
+    void update();
+    void delete();
+    void getOne()throws IOException;
+    void getAll();
 }

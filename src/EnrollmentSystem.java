@@ -1,12 +1,10 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static java.lang.Math.random;
 
-public class EnrollmentSystem {
+public class EnrollmentSystem implements StudentEnrolmentManager {
     public static ArrayList<Student> studentList = new ArrayList<Student>();
     public static ArrayList<Course> courseList = new ArrayList<Course>();
     public static ArrayList<StudentEnrolment> studentEnrolmentsList = new ArrayList<>();
@@ -111,6 +109,11 @@ public class EnrollmentSystem {
         return check;
     }
 
+    public static int randomNum(int min, int max){
+        Random random = new Random();
+        return random.nextInt(max - min)+min;
+    }
+
     public static void printOutInfo(){
         System.out.printf("%-20s", "STUDENT ID");
         System.out.printf("%20s", "STUDENT NAME");
@@ -131,19 +134,56 @@ public class EnrollmentSystem {
         return i;
     }
 
-    public static void fileSaving(String type, String name, List data) throws IOException {
-        String fileName = "src\\"+ name +".csv";
-        File file = new File(fileName);
-        FileWriter fileWriter = new FileWriter(file, true);
-        fileWriter.write(String.valueOf(data));
-        fileWriter.flush();
-        fileWriter.close();
+    public static boolean isFileExist(String name){
+        String fileNameNew = "src/" + name +".csv";
+        boolean check = false;
+        File filename =  new File(fileNameNew);
+        if (filename.exists()){
+            check = true;
+        }
+        return check;
+    }
+
+    public static void fileSaving(String name, List data) throws IOException {
+        File fileName =  new File("src"+"\\" +name +".csv");
+        File file = new File(String.valueOf(fileName));
+        boolean fileExist = isFileExist(String.valueOf(fileName));
+        System.out.println(file);
+        System.out.println(fileExist);
+        if (!fileExist) {
+            System.out.println("""
+                    File exist! Do you want to override?
+                    [1] Yes, [2] No
+                    Your options is:\s""");
+
+            if (InputOption() == 1) {
+                FileWriter fileWriter = new FileWriter(file, true);
+                fileWriter.write(String.valueOf(data));
+                fileWriter.flush();
+                fileWriter.close();
+                System.out.println("Saving completely!");
+            }
+            else {
+                FileWriter fileWriter = new FileWriter(file, true);
+                fileWriter.write(String.valueOf(data));
+                fileWriter.flush();
+                fileWriter.close();
+                name = name+randomNum(1,50);
+                System.out.println("Save successfully file " +name+ "!");
+            }
+        }
+        else {FileWriter fileWriter = new FileWriter(file, true);
+            fileWriter.write(String.valueOf(data));
+            fileWriter.flush();
+            fileWriter.close();
+            System.out.println("Saving completely!");}
+
     }
 
 
     // CRUD functions
-
-    public static void add() {
+    @Override
+    public void add() {
         String studentResult = null;
         String courseResult = null;
         Student s = null;
@@ -214,8 +254,8 @@ public class EnrollmentSystem {
             System.out.println(studentEnrolmentsList);
         }
         }
-
-    public static void delete(){
+    @Override
+    public void delete(){
         String studentResult = null;
         String courseResult = null;
         while (true) {
@@ -250,8 +290,8 @@ public class EnrollmentSystem {
                 System.out.println("Delete complete!");
             }
         }
-
-    public static void update(){
+    @Override
+    public void update(){
         String studentResult = null;
         do {
             System.out.print("Please input your ID: ");
@@ -286,8 +326,8 @@ public class EnrollmentSystem {
             }
     }  while (input!=0);
     }
-
-    public static void getOne() throws IOException {
+    @Override
+    public void getOne() throws IOException {
 
         System.out.println("""
                 [1] Get a course from a semester.
@@ -349,7 +389,7 @@ public class EnrollmentSystem {
                    List<List<String>> Tin = new ArrayList<>();
                    Tin.add(Arrays.asList("a,b,c,d,1"));
                    if (choice == 1){
-                   fileSaving("Student","file1",Tin );
+                   fileSaving("file1",Tin );
                }
                    else {break;}
                }
@@ -444,8 +484,8 @@ public class EnrollmentSystem {
             }
         }while(option!=0);
     }
-
-    public static void getAll(){
+    @Override
+    public void getAll(){
         printOutInfo();
         for (StudentEnrolment se: studentEnrolmentsList
              ) {
@@ -459,6 +499,7 @@ public class EnrollmentSystem {
     }
 
     public static void main(String[] args) throws IOException {
+        EnrollmentSystem system = new EnrollmentSystem();
         String filename = readCSV();
         int opt;
         do {
@@ -466,17 +507,15 @@ public class EnrollmentSystem {
             opt = InputOption();
             switch (opt) {
                 case 0 -> System.out.println("Exit");
-                case 1 -> add();
-                case 2 -> update();
-                case 3 -> delete();
-                case 4 -> getOne();
-                case 5 -> getAll();
+                case 1 -> system.add();
+                case 2 -> system.update();
+                case 3 -> system.delete();
+                case 4 -> system.getOne();
+                case 5 -> system.getAll();
             }
         }while (opt!=0);
     }
 }
-
-
 
 
 
