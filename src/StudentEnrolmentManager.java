@@ -7,5 +7,5 @@ public interface StudentEnrolmentManager {
     void update();
     void delete();
     void getOne()throws IOException;
-    void getAll();
+    void getAll() throws IOException;
 }
