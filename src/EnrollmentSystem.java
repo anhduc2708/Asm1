@@ -3,13 +3,15 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class EnrollmentSystem implements StudentEnrolmentManager {
+
+    //I created 3 array lists to store 3 categories of data
     public static ArrayList<Student> studentList = new ArrayList<Student>();
     public static ArrayList<Course> courseList = new ArrayList<Course>();
     public static ArrayList<StudentEnrolment> studentEnrolmentsList = new ArrayList<>();
     static Scanner in = new Scanner(System.in);
 
+    // A menu function to print out the menu
     public static void menu() {
         System.out.println("\n Enrollment System:");
         System.out.println("**********************");
@@ -21,6 +23,7 @@ public class EnrollmentSystem implements StudentEnrolmentManager {
         System.out.println("0: Exit");
     }
 
+    // A function to get the input option of users
     public static int InputOption() {
         int option;
         Scanner in = new Scanner(System.in);
@@ -29,6 +32,7 @@ public class EnrollmentSystem implements StudentEnrolmentManager {
         return option;
     }
 
+    // Readfile function in order to read through the line and also take the element in those data to store in the 3 array lists for later use
     public static String readCSV() {
         boolean done = false;
         String fileName = "d";
@@ -109,6 +113,7 @@ public class EnrollmentSystem implements StudentEnrolmentManager {
         return check;
     }
 
+    // Random number function to set the file name while file name exist but users don't want to override
     public static int randomNum(int min, int max) {
         Random random = new Random();
         return random.nextInt(max - min) + min;
@@ -124,6 +129,7 @@ public class EnrollmentSystem implements StudentEnrolmentManager {
         return 0;
     }
 
+    // The index function will find the index of the line that have data valid with the input from user
     public static int Index(String sId, String cId) {
         int i = 0;
         for (StudentEnrolment s : studentEnrolmentsList
@@ -135,6 +141,7 @@ public class EnrollmentSystem implements StudentEnrolmentManager {
         return i;
     }
 
+    // A function to check if the file exist
     public static boolean isFileExist(String name) {
         String fileNameNew = "src/" + name + ".csv";
         boolean check = false;
@@ -145,6 +152,7 @@ public class EnrollmentSystem implements StudentEnrolmentManager {
         return check;
     }
 
+    // This function will use the isFileExist function then save file
     public static void fileSaving(String name, List data) throws IOException {
         File fileName = new File("src" + "\\" + name + ".csv");
         File file = new File(String.valueOf(fileName));
@@ -579,7 +587,10 @@ public class EnrollmentSystem implements StudentEnrolmentManager {
             }
         }while (opt!=0);
     }
+
+
 }
+
 
 
 

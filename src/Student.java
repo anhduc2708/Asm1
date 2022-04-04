@@ -9,7 +9,6 @@ public class Student {
         this.sBd = sbd;
     }
 
-
     public String getsId() {
         return sId;
     }
